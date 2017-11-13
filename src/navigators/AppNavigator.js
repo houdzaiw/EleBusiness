@@ -1,46 +1,47 @@
-import React from 'react';
-import {Image} from 'react-native';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { addNavigationHelpers, StackNavigator,TabNavigator} from 'react-navigation';
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ * @flow
+ */
 
+import React from 'react';
+import {
+    Image,
+} from 'react-native';
+
+import {StackNavigator, TabNavigator } from "react-navigation";
 import  supplierlistscreen from '../containers/supplier/screens/supplierlistscreen';
+import  supplierDetail from '../containers/supplier/screens/supplierDetail';
 import  companysListScreen from '../containers/company/screens/companysListScreen';
 import  productsListScreen from '../containers/product/screens/productsListScreen';
 import  userscreen from '../containers/user/screens/userscreen';
+import  companyDetailScreen from '../containers/company/screens/companyDetailScreen';
 
 const MainScreenNavigator = TabNavigator({
-
     Supplier:{
-        screen: supplierlistscreen,
-        path:'companyDetailScreen',
-        // getScreen: () => require('./src/company/screens/companyDetailScreen').default,
+        screen:supplierlistscreen,
         navigationOptions:{
+            headerTitleStyle:{alignSelf:'center'},
             tabBarLabel:'供应商',
             tabBarIcon:({tintColor}) => (<Image source={require('../../asset/0.png')} style={[{tintColor: tintColor,height:20,width:20}]}/>),
-        }},
-
-    Company:{
-        screen:companysListScreen,
+        }
+    },
+    Company:{screen:companysListScreen,
         navigationOptions:{
-            tabBarLabel:'厂商',
+            tabBarLabel:'公司',
             tabBarIcon:({tintColor}) =>(<Image source={require('../../asset/熊猫.png')} style={[{tintColor: tintColor,height:20,width:20}]}/>),
         }},
-
-    Product:{
-        screen:productsListScreen,
+    Product:{screen:productsListScreen,
         navigationOptions:{
             tabBarLabel:'产品',
             tabBarIcon:({tintColor}) => (<Image source={require('../../asset/1.png')} style={[{tintColor: tintColor,height:20,width:20}]}/>),
         }},
-
     User:{
         screen:userscreen,
         navigationOptions:{
             tabBarLabel:'我的',
             tabBarIcon:({tintColor}) => (<Image source={require('../../asset/小鸡.png')} style={[{tintColor: tintColor,height:20,width:20}]}/>),
-        }
-    },
+        }},
 },{
     animationEnabled: false, // 切换页面时是否有动画效果
     tabBarPosition: 'bottom', // 显示在底端，android 默认是显示在页面顶端的
@@ -61,27 +62,23 @@ const MainScreenNavigator = TabNavigator({
             fontSize: 10, // 文字大小
         },
     }
-})
-export const AppNavigator = StackNavigator({
-    Supplier:{
-        screen:MainScreenNavigator,
-        navigationOptions:{
-            headerTitleStyle:{alignSelf:'center'}
-        }
-    },
-    Company: { screen: companysListScreen },
 });
-const AppWithNavigationState = ({ dispatch, nav }) => (
-    <AppNavigator navigation={addNavigationHelpers({ dispatch, state: nav })} />
-);
 
-AppWithNavigationState.propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    nav: PropTypes.object.isRequired,
+const SimpleApp = StackNavigator({
+    Supplier:{screen: MainScreenNavigator,},
+    Company:{screen:companysListScreen,},
+    CompanyDetail:{screen:companyDetailScreen,},
+    Product:{screen:productsListScreen,},
+    User:{screen:userscreen},
+    SupplierDetail:{screen:supplierDetail},
+}, {
+    initialRouteName: 'Supplier',
+})
+SimpleApp.router = {
+    ...SimpleApp.router,
+    getStateForAction(action, state) {
+        return SimpleApp.router.getStateForAction(action, state);
+    },
 };
 
-const mapStateToProps = state => ({
-    nav: state.nav,
-});
-
-export default connect(mapStateToProps)(AppWithNavigationState);
+export default SimpleApp;

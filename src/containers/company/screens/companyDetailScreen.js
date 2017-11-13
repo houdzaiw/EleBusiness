@@ -11,14 +11,13 @@ class companyDetailScreen extends Component {
     }
     static navigationOptions = {
         headerTitle:'厂商详情',
-        headerBackTitle:null,
         titleStyle: {color: '#ff00ff'},
         headerStyle:{backgroundColor:'red'}
     };
     render(){
         return(
             <View style = {{backgroundColor:'yellow',flex:1}}>
-                <Text>hello world</Text>
+                <Text>hello world ，my is supplier</Text>
             </View>
         )
     }

@@ -10,7 +10,7 @@ import {
 
 class companysListScreen extends Component {
     static navigationOptions = {
-        title: '厂商',
+        title: '公司',
         titleStyle: {color: '#ff00ff'},
         headerStyle:{backgroundColor:'red'}
     };
@@ -33,19 +33,20 @@ class companysListScreen extends Component {
         })
     }
     render() {
+        const {navigate} = this.props.navigation;
         return (
-            <ScrollView style={{paddingTop: 22}}>
+            <ScrollView>
                 <ListView
                     dataSource={this.state.dataSource}
                     renderRow={(rowData) => <View style={styles.listViewStyle}>
-                        <Button title={rowData} onPress={() => this.renderNextPage()}></Button>
+                        <Button
+                            onPress={() => navigate('CompanyDetail', {name: 'Brent'})}
+                            title={rowData}
+                        />
                     </View>}
                 />
             </ScrollView>
         );
-    }
-    renderNextPage(){
-        this.props.navigation.navigate("companyDetailScreen",{listRow:'hello world'})
     }
 }
 const styles = StyleSheet.create({
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
     },
     listViewStyle:{
         flexDirection:'row',
-        height:30,
+        height:40,
         backgroundColor:'cyan',
         marginTop:3,
         justifyContent:'center',
